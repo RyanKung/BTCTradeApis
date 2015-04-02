@@ -12,5 +12,7 @@ setup(
         'Topic :: Office/Business :: Financial'
     ],
     packages=find_packages("src"),
-    package_dir={'': 'src'}
+    package_dir={'': 'src'},
+    tests_require=['nose'],
+    test_suite='nose.collector',
 )

@@ -3,3 +3,5 @@ env
 *.pyc~
 build
 dist
+*.egg
+*.egg-info
