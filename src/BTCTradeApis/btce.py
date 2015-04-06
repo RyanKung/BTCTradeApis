@@ -9,7 +9,7 @@ class PublicApiV3(object):
     # Api method list
     # class variable shared by all instances
     methods = ['info', 'ticker', 'depth', 'trades']
-    all_pairs = ['btc_usd', 'btc_rur',
+    pairs = ['btc_usd', 'btc_rur',
                   'btc_eur', 'btc_cnh',
                   'btc_gbp', 'ltc_btc',
                   'ltc_usd', 'ltc_rur',
@@ -25,7 +25,8 @@ class PublicApiV3(object):
     api = "https://btc-e.com/api/3/%s/%s"
 
 
-
+    class ApiResponse(object):
+        pass
     @property
     def all_pairs(self):
         return '-'.join(self.pairs)
@@ -51,7 +52,7 @@ class PublicApiV3(object):
         '''
         def response_handler(res):
             # requestObj -> Dict
-            return {'data': res.data,
+            return {'data': res.json(),
                     'ok': res.ok,
                     'status_code': res.status_code
             }
@@ -68,7 +69,7 @@ class PublicApiV3(object):
                                     data=kwargs,
                                     verify=True)
 
-        return response_handler(do_request)
+        return response_handler(do_request())
 
     def __init__(self):
         '''
@@ -78,14 +79,13 @@ class PublicApiV3(object):
             '''
             Construct and regist get_%method% api
             :param method: a method list
-            :return: self 
+            :return: None
             '''
             setattr(self, 'get_%s'%method,
                     lambda ps: self.call_method(method, ps))
             return self
         
         map(regist_apis, self.methods)
-        return self
         
 class TradeAPIV1:
     pass
