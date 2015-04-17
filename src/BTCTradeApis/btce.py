@@ -84,8 +84,8 @@ class PublicApiV3(object):
 
         try:
             return response_handler(do_request())
-        except AssertionError, e:
-            print(e)
+        except AssertionError as err:
+            print(err)
 
 
 
@@ -162,6 +162,6 @@ class TradeAPIV1(object):
 
         try:
             return response_handler(do_request())
-        except AssertionError, e:
-            print(e)
+        except AssertionError as err:
+            print(err)
 
