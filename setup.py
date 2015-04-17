@@ -17,5 +17,6 @@ setup(
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
     package_dir={'': 'src'},
     tests_require=['nose'],
+    install_requires=['requests'],
     test_suite='nose.collector',
 )
