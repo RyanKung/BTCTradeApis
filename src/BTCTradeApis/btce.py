@@ -39,7 +39,7 @@ class PublicApiV3(object):
                     lambda ps: self.call_method(method, ps))
             return self
         
-        map(regist_apis, self.methods)
+        [regist_apis(m) for m in self.methods]
     
     @property
     def all_pairs(self):
@@ -125,7 +125,7 @@ class TradeAPIV1(object):
                     lambda ps: self.call_method(method, ps))
             return self
         
-        map(regist_apis, self.methods)
+        [regist_apis(m) for m in self.methods]
 
     @property
     def nonce(self):
@@ -163,5 +163,5 @@ class TradeAPIV1(object):
         try:
             return response_handler(do_request())
         except AssertionError as err:
-            print(err)
+            print()
 
