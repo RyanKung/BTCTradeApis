@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='BTCTradeApis',
-    version='0.1.1',
+    version='0.1.2',
     description='BTC trade api implementation for python',
     author='Ryan Kung',
     author_email='ryankung@ieee.org',
