@@ -2,6 +2,7 @@
 import requests
 import time
 
+
 class PublicApiV3(object):
     '''
     doc : https://btc-e.com/api/3/docs
@@ -35,27 +36,26 @@ class PublicApiV3(object):
             :param method: a method list
             :return: None
             '''
-            setattr(self, 'get_%s'%method,
+            setattr(self, 'get_%s' % method,
                     lambda ps: self.call_method(method, ps))
             return self
-        
         [regist_apis(m) for m in self.methods]
-    
+
     @property
     def all_pairs(self):
         return '-'.join(self.pairs)
-    
+
     def append_pairs(self, pairs):
         '''
         Add pair to exist pairs
         :param paris: accept list, tuple or str
         :return: self
         '''
-        if type(pair) in [list, tuple]:
+        if type(pairs) in [list, tuple]:
             self.pairs += pairs
         else:
             self.pairs.append(pairs)
-    
+
     def call_method(self, method, pairs, *args, **kwargs):
         '''
         Call API Method
@@ -66,19 +66,18 @@ class PublicApiV3(object):
         '''
         def response_handler(res):
             # requestObj -> Dict
-            assert res.status_code == 200, 'The status_code is %i, which should be 200'%res.status_code
-            assert res.ok == True, 'Request Failed'
+            assert res.status_code == 200, 'statusCode is %i' % res.status_code
+            assert res.ok, 'Request Failed'
             return res.json()
         
         def do_request():
             # list/str -> request
-            
             if type(pairs) in [list, tuple]:
-                return requests.get(self.api%(method, '-'.join(pairs)),
+                return requests.get(self.api % (method, '-'.join(pairs)),
                                     params=kwargs,
                                     verify=True)
             else:
-                return requests.get(self.api%(method, pairs),
+                return requests.get(self.api % (method, pairs),
                                     params=kwargs,
                                     verify=True)
 
@@ -88,18 +87,16 @@ class PublicApiV3(object):
             print(err)
 
 
-
-        
 class TradeAPIV1(object):
     '''
     doc: https://btc-e.com/tapi/docs
-    All requests to Trade API come from the following URL: https://btc-e.com/tapi
+    All requests to Trade API come from the following
+    URL: https://btc-e.com/tapi
     The method name is sent via the POST-parameter method.
     All method parameters are sent via the POST-parameters.
     All server responses are received in the JSON format.
     Each request needs an authentication..
     '''
-    
 
     methods = ['getInfo',
                'Trade',
@@ -110,11 +107,11 @@ class TradeAPIV1(object):
                'TransHistory']
 
     api = 'https://btc-e.com/tapi'
-               
-    def __init__(self, key, sigh):
+
+    def __init__(self, key, sign):
         self.key = key
         self.sign = sign
-        
+
         def regist_apis(method):
             '''
             Construct and regist get_%method% api
@@ -124,15 +121,13 @@ class TradeAPIV1(object):
             setattr(self, method,
                     lambda ps: self.call_method(method, ps))
             return self
-        
         [regist_apis(m) for m in self.methods]
 
     @property
     def nonce(self):
         '''
         Second transaction
-
-        For successful authentication you need to send a 
+        For successful authentication you need to send a
         POST-parameter nonce with incremental numeric value for each request.
         Minimum nonce value - 1, maximum - 4294967294
         '''
@@ -151,17 +146,16 @@ class TradeAPIV1(object):
 
         def response_handler(res):
             # requestObj -> Dict
-            assert res.status_code == 200, 'The status_code is %i, which should be 200'%res.status_code
-            assert res.ok == True, 'Request Failed'
+            assert res.status_code == 200, 'statusCode is %i' % res.status_code
+            assert res.ok, 'Request Failed'
             return res.json()
 
         def do_request():
-            requests.post(api, headers=self.headers,
+            requests.post(self.api, headers=self.headers,
                           params=dict(self.headers, **kwargs),
                           verify=True)
 
         try:
             return response_handler(do_request())
         except AssertionError as err:
-            print()
-
+            print(err)

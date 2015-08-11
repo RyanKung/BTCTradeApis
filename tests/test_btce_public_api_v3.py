@@ -3,6 +3,7 @@
 from tests import TestCase
 from BTCTradeApis import btce
 
+
 class TestBTCEPublicApiV3(TestCase):
 
     def setUp(self):
