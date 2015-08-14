@@ -69,7 +69,7 @@ class PublicApiV3(object):
             assert res.status_code == 200, 'statusCode is %i' % res.status_code
             assert res.ok, 'Request Failed'
             return res.json()
-        
+
         def do_request():
             # list/str -> request
             if type(pairs) in [list, tuple]:
@@ -152,7 +152,7 @@ class TradeAPIV1(object):
 
         def do_request():
             requests.post(self.api, headers=self.headers,
-                          params=dict(self.headers, **kwargs),
+                          data=dict(self.headers, **kwargs),
                           verify=True)
 
         try:
